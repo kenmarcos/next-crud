@@ -1,19 +1,15 @@
 import Client from "../../core/Client/client";
 import { EditIcon, TrashIcon } from "../Icons";
+import Modal from "../Modal";
+import * as Dialog from "@radix-ui/react-dialog";
+import Button from "../Button";
+import ClientEditForm from "../Forms/ClientEditForm";
 
 interface TableProps {
   clients: Client[];
 }
 
 const Table = (props: TableProps) => {
-  const openEditClientModal = (client: Client) => {
-    console.log(client.name);
-  };
-
-  const openRemoveClientModal = (client: Client) => {
-    console.log(client.name);
-  };
-
   return (
     <table className="w-full rounded-md overflow-hidden">
       <thead className="bg-gradient-to-r from-purple-500 to-purple-800 text-gray-200">
@@ -35,19 +31,49 @@ const Table = (props: TableProps) => {
             <td className="text-left p-4">{client.name}</td>
             <td className="text-left p-4">{client.age}</td>
             <td className="flex justify-center p-4 gap-1">
-              <button
-                onClick={() => openEditClientModal(client)}
-                className="text-green-700 rounded-full hover:bg-gray-50 p-2 flex justify-center items-center"
+              <Modal
+                triggerButton={
+                  <button className="text-green-700 rounded-full hover:bg-gray-50 p-2 flex justify-center items-center focus:border-none">
+                    <EditIcon />
+                  </button>
+                }
+                modalTitle="Editar Cliente"
               >
-                <EditIcon />
-              </button>
+                <ClientEditForm client={client} />
+              </Modal>
 
-              <button
-                onClick={() => openRemoveClientModal(client)}
-                className="text-red-500 rounded-full hover:bg-gray-50 p-2 flex justify-center items-center"
+              <Modal
+                triggerButton={
+                  <button className="text-red-500 rounded-full hover:bg-gray-50 p-2 flex justify-center items-center focus:border-none">
+                    <TrashIcon />
+                  </button>
+                }
+                modalTitle="Excluir Cliente"
               >
-                <TrashIcon />
-              </button>
+                <div className="border border-purple-400 px-4 py-2 rounded-md">
+                  <p>Código: {client.id}</p>
+                  <p>Nome: {client.name}</p>
+                  <p>
+                    Idade: {client.age} ano{`${client.age > 1 ? "s" : ""}`}
+                  </p>
+                </div>
+
+                <h2 className="text-center text-2xl my-4">
+                  Tem certeza que deseja remover este cliente?
+                </h2>
+
+                <div className="flex gap-4 mt-8 justify-center">
+                  <Dialog.Close asChild>
+                    <Button className="bg-gradient-to-r from-gray-400 to-gray-700">
+                      Cancelar
+                    </Button>
+                  </Dialog.Close>
+
+                  <Button className="bg-gradient-to-r from-purple-500 to-purple-800">
+                    Remover
+                  </Button>
+                </div>
+              </Modal>
             </td>
           </tr>
         ))}

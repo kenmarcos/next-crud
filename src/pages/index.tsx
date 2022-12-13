@@ -3,6 +3,8 @@ import { PlusIcon } from "../components/Icons";
 import Layout from "../components/Layout";
 import Table from "../components/Table";
 import Client from "../core/Client/client";
+import Modal from "../components/Modal";
+import ClientRegisterForm from "../components/Forms/ClientRegisterForm";
 
 const clients = [
   new Client("Marcos", "1990-12-13T02:00:00.000Z", "m1"),
@@ -16,15 +18,22 @@ const Home = () => {
     <Layout>
       <section className="bg-white rounded-md w-2/3">
         <header className="m-0 border-b-4 border-purple-500 p-4">
-          <h1 className="text-4xl">Cadastro Simples</h1>
+          <h1 className="text-4xl font-black text-purple-800">Meus Clientes</h1>
         </header>
 
         <div className="p-4">
           <div className="flex justify-end mb-4">
-            <Button className="bg-gradient-to-r from-blue-400 to-blue-700">
-              <PlusIcon />
-              Novo Cliente
-            </Button>
+            <Modal
+              triggerButton={
+                <Button className="bg-gradient-to-r from-blue-400 to-blue-700">
+                  <PlusIcon />
+                  Novo Cliente
+                </Button>
+              }
+              modalTitle="Cadastrar Novo Cliente"
+            >
+              <ClientRegisterForm />
+            </Modal>
           </div>
 
           <Table clients={clients} />
