@@ -1,3 +1,5 @@
+import Button from "../components/Button";
+import { PlusIcon } from "../components/Icons";
 import Layout from "../components/Layout";
 import Table from "../components/Table";
 import Client from "../core/Client/client";
@@ -18,6 +20,13 @@ const Home = () => {
         </header>
 
         <div className="p-4">
+          <div className="flex justify-end mb-4">
+            <Button className="bg-gradient-to-r from-blue-400 to-blue-700">
+              <PlusIcon />
+              Novo Cliente
+            </Button>
+          </div>
+
           <Table clients={clients} />
         </div>
       </section>
