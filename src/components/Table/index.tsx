@@ -1,12 +1,14 @@
-import Client from "../../core/Client/client";
+import Client from "../../core/Client";
 import { EditIcon, TrashIcon } from "../Icons";
 import Modal from "../Modal";
 import * as Dialog from "@radix-ui/react-dialog";
 import Button from "../Button";
 import ClientEditForm from "../Forms/ClientEditForm";
+import ClientRemoveAlert from "./components/ClientRemoveAlert";
 
 interface TableProps {
   clients: Client[];
+  getClients: () => Promise<void>;
 }
 
 const Table = (props: TableProps) => {
@@ -29,7 +31,7 @@ const Table = (props: TableProps) => {
           >
             <td className="text-left p-4">{client.id}</td>
             <td className="text-left p-4">{client.name}</td>
-            <td className="text-left p-4">{client.age}</td>
+            <td className="text-left p-4">{String(client.age)}</td>
             <td className="flex justify-center p-4 gap-1">
               <Modal
                 triggerButton={
@@ -39,7 +41,7 @@ const Table = (props: TableProps) => {
                 }
                 modalTitle="Editar Cliente"
               >
-                <ClientEditForm client={client} />
+                <ClientEditForm client={client} getClients={props.getClients} />
               </Modal>
 
               <Modal
@@ -50,29 +52,10 @@ const Table = (props: TableProps) => {
                 }
                 modalTitle="Excluir Cliente"
               >
-                <div className="border border-purple-400 px-4 py-2 rounded-md">
-                  <p>Código: {client.id}</p>
-                  <p>Nome: {client.name}</p>
-                  <p>
-                    Idade: {client.age} ano{`${client.age > 1 ? "s" : ""}`}
-                  </p>
-                </div>
-
-                <h2 className="text-center text-2xl my-4">
-                  Tem certeza que deseja remover este cliente?
-                </h2>
-
-                <div className="flex gap-4 mt-8 justify-center">
-                  <Dialog.Close asChild>
-                    <Button className="bg-gradient-to-r from-gray-400 to-gray-700">
-                      Cancelar
-                    </Button>
-                  </Dialog.Close>
-
-                  <Button className="bg-gradient-to-r from-purple-500 to-purple-800">
-                    Remover
-                  </Button>
-                </div>
+                <ClientRemoveAlert
+                  client={client}
+                  getClients={props.getClients}
+                />
               </Modal>
             </td>
           </tr>
