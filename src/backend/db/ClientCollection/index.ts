@@ -1,5 +1,7 @@
-import Client from "../../../core/Client";
-import ClientRepository from "../../../core/ClientRepository";
+import ClientRepository from "core/ClientRepository";
+import { dataBase } from "backend/config";
+import Client from "core/Client";
+
 import firestore, {
   addDoc,
   collection,
@@ -9,7 +11,6 @@ import firestore, {
   getDocs,
   setDoc,
 } from "firebase/firestore";
-import { dataBase } from "../../config";
 
 class ClientCollection implements ClientRepository {
   #conversor = {

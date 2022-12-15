@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import Client from "../../core/Client";
-import ClientEditForm from "../Forms/ClientEditForm";
-import { EditIcon, TrashIcon } from "../Icons";
-import Modal from "../Modal";
-import ClientRemoveAlert from "../Table/components/ClientRemoveAlert";
+
+import ClientEditForm from "pages/components/Table/components/Forms/ClientEditForm";
+import ClientRemoveAlert from "pages/components/Table/components/ClientRemoveAlert";
+import { EditIcon, TrashIcon } from "components/Icons";
+import Modal from "components/Modal";
+import Client from "core/Client";
 
 interface ClientCardProps {
   client: Client;

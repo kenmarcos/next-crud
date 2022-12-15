@@ -1,20 +1,22 @@
-import * as Dialog from "@radix-ui/react-dialog";
-import Button from "../../Button";
-import { BirthDateIcon, PersonIcon } from "../../Icons";
-import Input from "../../Input";
-import * as yup from "yup";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import Client from "../../../core/Client";
-import ClientRepository from "../../../core/ClientRepository";
-import ClientCollection from "../../../backend/db/ClientCollection";
-import moment from "moment";
 import { Dispatch, SetStateAction } from "react";
+
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Dialog from "@radix-ui/react-dialog";
+import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import Loading from "../../Loading";
-import useLoading from "../../../hooks/useLoading";
-import useMask from "../../../hooks/useMask";
-import useValidator from "../../../hooks/useValidator";
+import moment from "moment";
+import * as yup from "yup";
+
+import { BirthDateIcon, PersonIcon } from "components/Icons";
+import ClientCollection from "backend/db/ClientCollection";
+import ClientRepository from "core/ClientRepository";
+import useValidator from "hooks/useValidator";
+import useLoading from "hooks/useLoading";
+import Loading from "components/Loading";
+import Button from "components/Button";
+import Input from "components/Input";
+import useMask from "hooks/useMask";
+import Client from "core/Client";
 
 interface ClientRegisterFormProps {
   getClients: () => Promise<void>;

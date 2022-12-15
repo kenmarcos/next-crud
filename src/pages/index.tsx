@@ -1,14 +1,15 @@
-import Button from "../components/Button";
-import { ExclamationIcon, PlusIcon } from "../components/Icons";
-import Layout from "../components/Layout";
-import Table from "../components/Table";
-import Client from "../core/Client";
-import Modal from "../components/Modal";
-import ClientRegisterForm from "../components/Forms/ClientRegisterForm";
-import ClientRepository from "../core/ClientRepository";
-import ClientCollection from "../backend/db/ClientCollection";
 import { useEffect, useState } from "react";
-import Loading from "../components/Loading";
+
+import ClientRegisterForm from "pages/components/Table/components/Forms/ClientRegisterForm";
+import { ExclamationIcon, PlusIcon } from "components/Icons";
+import ClientCollection from "backend/db/ClientCollection";
+import ClientRepository from "core/ClientRepository";
+import Table from "pages/components/Table";
+import Loading from "components/Loading";
+import Button from "components/Button";
+import Layout from "components/Layout";
+import Modal from "components/Modal";
+import Client from "core/Client";
 
 const Home = () => {
   const repo: ClientRepository = new ClientCollection();

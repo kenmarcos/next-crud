@@ -1,10 +1,5 @@
-import Client from "../../core/Client";
-import { EditIcon, TrashIcon } from "../Icons";
-import Modal from "../Modal";
-import Button from "../Button";
-import ClientEditForm from "../Forms/ClientEditForm";
-import ClientRemoveAlert from "./components/ClientRemoveAlert";
-import ClientCard from "../ClientCard";
+import ClientCard from "pages/components/Table/components/ClientCard";
+import Client from "core/Client";
 
 interface TableProps {
   clients: Client[];

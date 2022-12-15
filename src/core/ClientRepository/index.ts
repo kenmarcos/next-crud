@@ -1,4 +1,4 @@
-import Client from "../Client";
+import Client from "core/Client";
 
 interface ClientRepository {
   save: (client: Client) => Promise<Client>;

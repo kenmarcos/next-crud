@@ -1,12 +1,14 @@
-import * as Dialog from "@radix-ui/react-dialog";
 import { Dispatch, SetStateAction } from "react";
-import ClientCollection from "../../../../backend/db/ClientCollection";
-import Client from "../../../../core/Client";
-import ClientRepository from "../../../../core/ClientRepository";
-import Button from "../../../Button";
+
+import * as Dialog from "@radix-ui/react-dialog";
 import { toast } from "react-toastify";
-import useLoading from "../../../../hooks/useLoading";
-import Loading from "../../../Loading";
+
+import ClientCollection from "backend/db/ClientCollection";
+import ClientRepository from "core/ClientRepository";
+import useLoading from "hooks/useLoading";
+import Loading from "components/Loading";
+import Button from "components/Button";
+import Client from "core/Client";
 
 interface ClientRemoveAlert {
   client: Client;
