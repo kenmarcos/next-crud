@@ -12,7 +12,9 @@ import moment from "moment";
 import { Dispatch, SetStateAction } from "react";
 import { toast } from "react-toastify";
 import Loading from "../../Loading";
-import useLoading from "../../hooks/useLoading";
+import useLoading from "../../../hooks/useLoading";
+import useMask from "../../../hooks/useMask";
+import useValidator from "../../../hooks/useValidator";
 
 interface ClientRegisterFormProps {
   getClients: () => Promise<void>;
@@ -27,18 +29,22 @@ const ClientRegisterForm = (props: ClientRegisterFormProps) => {
   const repo: ClientRepository = new ClientCollection();
 
   const { isLoading, showLoading, closeLoading } = useLoading();
+  const { dateInput } = useMask();
+  const { validateBirthDate } = useValidator();
 
   const schema = yup.object().shape({
-    name: yup.string().required("*Campo obrigatório"),
+    name: yup.string().required("*Campo obrigatório").trim(),
     birthDate: yup
       .string()
       .transform((value) => moment(value, "DD/MM/YYYY").toISOString(true))
+      .test("birthDateValidator", "*Data inválida", validateBirthDate)
       .nullable()
       .required("*Campo obrigatório"),
   });
 
   const {
     register,
+    setValue,
     handleSubmit,
     formState: { errors },
   } = useForm<ClientRegisterFormData>({ resolver: yupResolver(schema) });
@@ -85,6 +91,7 @@ const ClientRegisterForm = (props: ClientRegisterFormProps) => {
             icon={<BirthDateIcon />}
             {...register("birthDate")}
             error={errors.birthDate?.message}
+            onChange={(event) => dateInput(event, setValue, "birthDate")}
           />
         </div>
 

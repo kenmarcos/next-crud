@@ -12,7 +12,9 @@ import ClientRepository from "../../../core/ClientRepository";
 import ClientCollection from "../../../backend/db/ClientCollection";
 import { toast } from "react-toastify";
 import Loading from "../../Loading";
-import useLoading from "../../hooks/useLoading";
+import useLoading from "../../../hooks/useLoading";
+import useMask from "../../../hooks/useMask";
+import useValidator from "../../../hooks/useValidator";
 
 interface ClientEditFormProps {
   client: Client;
@@ -30,13 +32,16 @@ const ClientEditForm = (props: ClientEditFormProps) => {
   const repo: ClientRepository = new ClientCollection();
 
   const { isLoading, showLoading, closeLoading } = useLoading();
+  const { dateInput } = useMask();
+  const { validateBirthDate } = useValidator();
 
   const schema = yup.object().shape({
     id: yup.string(),
-    name: yup.string().required("*Campo obrigatório"),
+    name: yup.string().required("*Campo obrigatório").trim(),
     birthDate: yup
       .string()
       .transform((value) => moment(value, "DD/MM/YYYY").toISOString(true))
+      .test("birthDateValidator", "*Data inválida", validateBirthDate)
       .nullable()
       .required("*Campo obrigatório"),
   });
@@ -44,6 +49,7 @@ const ClientEditForm = (props: ClientEditFormProps) => {
   const {
     register,
     setFocus,
+    setValue,
     handleSubmit,
     formState: { errors },
   } = useForm<ClientEditFormData>({ resolver: yupResolver(schema) });
@@ -106,6 +112,7 @@ const ClientEditForm = (props: ClientEditFormProps) => {
             defaultValue={moment(props.client.birthDate).format("DD/MM/YYYY")}
             {...register("birthDate")}
             error={errors.birthDate?.message}
+            onChange={(event) => dateInput(event, setValue, "birthDate")}
           />
         </div>
 

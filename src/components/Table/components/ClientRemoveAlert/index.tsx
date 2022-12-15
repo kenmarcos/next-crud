@@ -5,7 +5,7 @@ import Client from "../../../../core/Client";
 import ClientRepository from "../../../../core/ClientRepository";
 import Button from "../../../Button";
 import { toast } from "react-toastify";
-import useLoading from "../../../hooks/useLoading";
+import useLoading from "../../../../hooks/useLoading";
 import Loading from "../../../Loading";
 
 interface ClientRemoveAlert {
@@ -53,8 +53,7 @@ const ClientRemoveAlert = (props: ClientRemoveAlert) => {
             <strong>Nome:</strong> {props.client.name}
           </p>
           <p>
-            <strong>Idade:</strong> {props.client.age} ano
-            {`${props.client.age > 1 ? "s" : ""}`}
+            <strong>Idade:</strong> {props.client.age}
           </p>
         </div>
 
