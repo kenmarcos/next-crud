@@ -19,7 +19,7 @@ const Table = (props: TableProps) => {
       </thead>
 
       <tbody>
-        {props.clients.map((client, idx) => (
+        {props.clients?.map((client, idx) => (
           <ClientCard
             key={client.id}
             client={client}
