@@ -98,11 +98,13 @@ const ClientRegisterForm = (props: ClientRegisterFormProps) => {
         </div>
 
         <div className="flex gap-4 mt-8 justify-end">
-          <Dialog.Close asChild>
-            <Button className="bg-gradient-to-r from-gray-400 to-gray-700">
-              Cancelar
-            </Button>
-          </Dialog.Close>
+          <Button
+            type="button"
+            onClick={() => props.setIsClientRegisterModalOpen(false)}
+            className="bg-gradient-to-r from-gray-400 to-gray-700"
+          >
+            Cancelar
+          </Button>
 
           <Button
             type="submit"
