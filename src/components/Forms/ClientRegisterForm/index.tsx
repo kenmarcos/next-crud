@@ -11,6 +11,8 @@ import ClientCollection from "../../../backend/db/ClientCollection";
 import moment from "moment";
 import { Dispatch, SetStateAction } from "react";
 import { toast } from "react-toastify";
+import Loading from "../../Loading";
+import useLoading from "../../hooks/useLoading";
 
 interface ClientRegisterFormProps {
   getClients: () => Promise<void>;
@@ -24,11 +26,15 @@ interface ClientRegisterFormData {
 const ClientRegisterForm = (props: ClientRegisterFormProps) => {
   const repo: ClientRepository = new ClientCollection();
 
+  const { isLoading, showLoading, closeLoading } = useLoading();
+
   const schema = yup.object().shape({
-    name: yup.string(),
+    name: yup.string().required("*Campo obrigatório"),
     birthDate: yup
       .string()
-      .transform((value) => moment(value, "DD/MM/YYYY").toISOString(true)),
+      .transform((value) => moment(value, "DD/MM/YYYY").toISOString(true))
+      .nullable()
+      .required("*Campo obrigatório"),
   });
 
   const {
@@ -38,56 +44,68 @@ const ClientRegisterForm = (props: ClientRegisterFormProps) => {
   } = useForm<ClientRegisterFormData>({ resolver: yupResolver(schema) });
 
   const onSubmitFunction = async (data: ClientRegisterFormData) => {
+    showLoading();
+
     const client = new Client(data.name, data.birthDate);
+
     try {
       await repo.save(client);
 
       await props.getClients();
 
+      closeLoading();
+
       toast.success("Cadastro realizado com sucesso!");
       props.setIsClientRegisterModalOpen(false);
     } catch (error) {
+      closeLoading();
       console.log(error);
       toast.error("Ocorreu um erro! Por favor, tente novamente.");
     }
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmitFunction)}>
-      <div className="flex flex-col gap-1 mb-4">
-        <Input
-          labeltext="Nome:"
-          placeholder="Nome Completo"
-          icon={<PersonIcon />}
-          {...register("name")}
-        />
-      </div>
+    <>
+      <form onSubmit={handleSubmit(onSubmitFunction)}>
+        <div className="flex flex-col gap-1 mb-4">
+          <Input
+            labeltext="Nome:"
+            placeholder="Nome Completo"
+            icon={<PersonIcon />}
+            {...register("name")}
+            error={errors.name?.message}
+          />
+        </div>
 
-      <div className="flex flex-col gap-1">
-        <Input
-          labeltext="Data de Nascimento:"
-          type="text"
-          placeholder="dd/mm/aaaa"
-          icon={<BirthDateIcon />}
-          {...register("birthDate")}
-        />
-      </div>
+        <div className="flex flex-col gap-1">
+          <Input
+            labeltext="Data de Nascimento:"
+            type="text"
+            placeholder="dd/mm/aaaa"
+            icon={<BirthDateIcon />}
+            {...register("birthDate")}
+            error={errors.birthDate?.message}
+          />
+        </div>
 
-      <div className="flex gap-4 mt-8 justify-end">
-        <Dialog.Close asChild>
-          <Button className="bg-gradient-to-r from-gray-400 to-gray-700">
-            Cancelar
+        <div className="flex gap-4 mt-8 justify-end">
+          <Dialog.Close asChild>
+            <Button className="bg-gradient-to-r from-gray-400 to-gray-700">
+              Cancelar
+            </Button>
+          </Dialog.Close>
+
+          <Button
+            type="submit"
+            className="bg-gradient-to-r from-purple-500 to-purple-800"
+          >
+            Cadastrar
           </Button>
-        </Dialog.Close>
+        </div>
+      </form>
 
-        <Button
-          type="submit"
-          className="bg-gradient-to-r from-purple-500 to-purple-800"
-        >
-          Cadastrar
-        </Button>
-      </div>
-    </form>
+      {!!isLoading && <Loading />}
+    </>
   );
 };
 

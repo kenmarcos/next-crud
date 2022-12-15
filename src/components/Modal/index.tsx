@@ -16,7 +16,11 @@ const Modal = (props: ModalProps) => {
 
       <Dialog.Portal>
         <Dialog.Overlay className="fixed bg-black/60 inset-0" />
-        <Dialog.Content className="bg-white fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] rounded-md p-6 w-[90vw] max-w-xl">
+        <Dialog.Content
+          onEscapeKeyDown={(event) => event.preventDefault()}
+          onPointerDownOutside={(event) => event.preventDefault()}
+          className="bg-white fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] rounded-md p-6 w-[90vw] max-w-xl"
+        >
           <Dialog.Title className="text-3xl font-black mb-8 text-purple-800">
             {props.modalTitle}
           </Dialog.Title>

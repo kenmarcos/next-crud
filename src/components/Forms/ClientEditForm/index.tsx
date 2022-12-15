@@ -11,6 +11,8 @@ import { Dispatch, SetStateAction, useEffect } from "react";
 import ClientRepository from "../../../core/ClientRepository";
 import ClientCollection from "../../../backend/db/ClientCollection";
 import { toast } from "react-toastify";
+import Loading from "../../Loading";
+import useLoading from "../../hooks/useLoading";
 
 interface ClientEditFormProps {
   client: Client;
@@ -27,12 +29,16 @@ interface ClientEditFormData {
 const ClientEditForm = (props: ClientEditFormProps) => {
   const repo: ClientRepository = new ClientCollection();
 
+  const { isLoading, showLoading, closeLoading } = useLoading();
+
   const schema = yup.object().shape({
     id: yup.string(),
-    name: yup.string(),
+    name: yup.string().required("*Campo obrigatório"),
     birthDate: yup
       .string()
-      .transform((value) => moment(value, "DD/MM/YYYY").toISOString(true)),
+      .transform((value) => moment(value, "DD/MM/YYYY").toISOString(true))
+      .nullable()
+      .required("*Campo obrigatório"),
   });
 
   const {
@@ -43,15 +49,21 @@ const ClientEditForm = (props: ClientEditFormProps) => {
   } = useForm<ClientEditFormData>({ resolver: yupResolver(schema) });
 
   const onSubmitFunction = async (data: ClientEditFormData) => {
+    showLoading();
+
     const client = new Client(data.name, data.birthDate, data.id);
     try {
       await repo.save(client);
 
       await props.getClients();
 
+      closeLoading();
+
       toast.success("Dados atualizados com sucesso!");
       props.setIsClientEditModalOpen(false);
     } catch (error) {
+      closeLoading();
+
       console.log(error);
       toast.error("Ocorreu um erro! Por favor, tente novamente.");
     }
@@ -62,53 +74,59 @@ const ClientEditForm = (props: ClientEditFormProps) => {
   }, [setFocus]);
 
   return (
-    <form onSubmit={handleSubmit(onSubmitFunction)}>
-      <div className="flex flex-col gap-1 mb-4">
-        <Input
-          labeltext="Código:"
-          placeholder="Código de Identificação"
-          readOnly
-          defaultValue={props.client.id as string}
-          {...register("id")}
-        />
-      </div>
+    <>
+      <form onSubmit={handleSubmit(onSubmitFunction)}>
+        <div className="flex flex-col gap-1 mb-4">
+          <Input
+            labeltext="Código:"
+            placeholder="Código de Identificação"
+            readOnly
+            defaultValue={props.client.id as string}
+            {...register("id")}
+          />
+        </div>
 
-      <div className="flex flex-col gap-1 mb-4">
-        <Input
-          labeltext="Nome:"
-          placeholder="Nome Completo"
-          icon={<PersonIcon />}
-          defaultValue={props.client.name}
-          {...register("name")}
-        />
-      </div>
+        <div className="flex flex-col gap-1 mb-4">
+          <Input
+            labeltext="Nome:"
+            placeholder="Nome Completo"
+            icon={<PersonIcon />}
+            defaultValue={props.client.name}
+            {...register("name")}
+            error={errors.name?.message}
+          />
+        </div>
 
-      <div className="flex flex-col gap-1">
-        <Input
-          labeltext="Data de Nascimento:"
-          type="text"
-          placeholder="dd/mm/aaaa"
-          icon={<BirthDateIcon />}
-          defaultValue={moment(props.client.birthDate).format("DD/MM/YYYY")}
-          {...register("birthDate")}
-        />
-      </div>
+        <div className="flex flex-col gap-1">
+          <Input
+            labeltext="Data de Nascimento:"
+            type="text"
+            placeholder="dd/mm/aaaa"
+            icon={<BirthDateIcon />}
+            defaultValue={moment(props.client.birthDate).format("DD/MM/YYYY")}
+            {...register("birthDate")}
+            error={errors.birthDate?.message}
+          />
+        </div>
 
-      <div className="flex gap-4 mt-8 justify-end">
-        <Dialog.Close asChild>
-          <Button className="bg-gradient-to-r from-gray-400 to-gray-700">
-            Cancelar
+        <div className="flex gap-4 mt-8 justify-end">
+          <Dialog.Close asChild>
+            <Button className="bg-gradient-to-r from-gray-400 to-gray-700">
+              Cancelar
+            </Button>
+          </Dialog.Close>
+
+          <Button
+            type="submit"
+            className="bg-gradient-to-r from-purple-500 to-purple-800"
+          >
+            Salvar
           </Button>
-        </Dialog.Close>
+        </div>
+      </form>
 
-        <Button
-          type="submit"
-          className="bg-gradient-to-r from-purple-500 to-purple-800"
-        >
-          Salvar
-        </Button>
-      </div>
-    </form>
+      {!!isLoading && <Loading />}
+    </>
   );
 };
 
