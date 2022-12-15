@@ -52,10 +52,10 @@ const ClientRemoveAlert = (props: ClientRemoveAlert) => {
             <strong>Código:</strong> {props.client?.id}
           </p>
           <p>
-            <strong>Nome:</strong> {props.client.name}
+            <strong>Nome:</strong> {props.client?.name}
           </p>
           <p>
-            <strong>Idade:</strong> {props.client.age}
+            <strong>Idade:</strong> {props.client?.age}
           </p>
         </div>
 
