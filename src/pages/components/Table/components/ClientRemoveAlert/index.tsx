@@ -49,7 +49,7 @@ const ClientRemoveAlert = (props: ClientRemoveAlert) => {
 
         <div className="border-2 border-gray-300 px-4 py-2 rounded-md bg-blue-50">
           <p className="break-all">
-            <strong>Código:</strong> {props.client.id}
+            <strong>Código:</strong> {props.client?.id}
           </p>
           <p>
             <strong>Nome:</strong> {props.client.name}
