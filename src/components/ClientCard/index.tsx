@@ -20,10 +20,12 @@ const ClientCard = (props: ClientCardProps) => {
       key={props.client.id}
       className={`${props.idx % 2 === 0 ? "bg-purple-200" : "bg-purple-100"}`}
     >
-      <td className="text-left p-4">{props.client.id}</td>
+      <td className="text-left p-4 hidden sm:block break-all">
+        {props.client.id}
+      </td>
       <td className="text-left p-4">{props.client.name}</td>
       <td className="text-left p-4">{String(props.client.age)}</td>
-      <td className="flex justify-center p-4 gap-1">
+      <td className="flex flex-col lg:flex-row justify-center p-4 gap-1">
         <Modal
           open={isClientEditModalOpen}
           setOpen={setIsClientEditModalOpen}

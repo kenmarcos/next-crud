@@ -35,8 +35,8 @@ const ClientRemoveAlert = (props: ClientRemoveAlert) => {
         Tem certeza que deseja remover este cliente?
       </h2>
 
-      <div className="border-2 border-gray-300 px-4 py-2 rounded-md">
-        <p>
+      <div className="border-2 border-gray-300 px-4 py-2 rounded-md bg-blue-50">
+        <p className="break-all">
           <strong>Código:</strong> {props.client.id}
         </p>
         <p>

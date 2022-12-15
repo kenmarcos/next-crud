@@ -16,7 +16,7 @@ const Table = (props: TableProps) => {
     <table className="w-full rounded-md overflow-hidden">
       <thead className="bg-gradient-to-r from-purple-500 to-purple-800 text-gray-200">
         <tr>
-          <th className="text-left p-4">Código</th>
+          <th className="text-left p-4 hidden sm:block">Código</th>
           <th className="text-left p-4">Nome</th>
           <th className="text-left p-4">Idade</th>
           <th className="p-4">Ações</th>

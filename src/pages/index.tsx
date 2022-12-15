@@ -33,7 +33,7 @@ const Home = () => {
 
   return (
     <Layout>
-      <section className="bg-white rounded-md w-2/3">
+      <section className="bg-white rounded-md w-11/12 md:w-2/3">
         <header className="m-0 border-b-4 border-purple-500 p-4">
           <h1 className="text-4xl font-black text-purple-800">Meus Clientes</h1>
         </header>
