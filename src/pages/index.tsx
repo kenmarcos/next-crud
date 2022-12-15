@@ -9,15 +9,11 @@ import ClientRepository from "../core/ClientRepository";
 import ClientCollection from "../backend/db/ClientCollection";
 import { useEffect, useState } from "react";
 
-// const clients = [
-//   new Client("Marcos", "1990-12-13T02:00:00.000Z", "m1"),
-//   new Client("Natália", "1995-10-25T02:00:00.000Z", "n2"),
-//   new Client("Paula", "2011-08-19T02:00:00.000Z", "p1"),
-//   new Client("Ana", "1990-12-13T02:00:00.000Z", "a1"),
-// ];
-
 const Home = () => {
   const repo: ClientRepository = new ClientCollection();
+
+  const [isClientRegisterModalOpen, setIsClientRegisterModalOpen] =
+    useState(false);
 
   const [clients, setClients] = useState<Client[]>([]);
 
@@ -45,6 +41,8 @@ const Home = () => {
         <div className="p-4">
           <div className="flex justify-end mb-4">
             <Modal
+              open={isClientRegisterModalOpen}
+              setOpen={setIsClientRegisterModalOpen}
               triggerButton={
                 <Button className="bg-gradient-to-r from-blue-400 to-blue-700">
                   <PlusIcon />
@@ -53,7 +51,10 @@ const Home = () => {
               }
               modalTitle="Cadastrar Novo Cliente"
             >
-              <ClientRegisterForm getClients={getClients} />
+              <ClientRegisterForm
+                getClients={getClients}
+                setIsClientRegisterModalOpen={setIsClientRegisterModalOpen}
+              />
             </Modal>
           </div>
 

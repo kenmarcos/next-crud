@@ -1,20 +1,32 @@
 import * as Dialog from "@radix-ui/react-dialog";
+import { Dispatch, SetStateAction } from "react";
 import ClientCollection from "../../../../backend/db/ClientCollection";
 import Client from "../../../../core/Client";
 import ClientRepository from "../../../../core/ClientRepository";
 import Button from "../../../Button";
+import { toast } from "react-toastify";
 
 interface ClientRemoveAlert {
   client: Client;
   getClients: () => Promise<void>;
+  setIsClientRemoveModalOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 const ClientRemoveAlert = (props: ClientRemoveAlert) => {
   const repo: ClientRepository = new ClientCollection();
 
   const removeClient = async () => {
-    await repo.delete(props.client);
-    props.getClients();
+    try {
+      await repo.delete(props.client);
+
+      await props.getClients();
+
+      toast.success("Cliente removido com sucesso!");
+      props.setIsClientRemoveModalOpen(false);
+    } catch (error) {
+      console.log(error);
+      toast.error("Ocorreu um erro! Por favor, tente novamente.");
+    }
   };
 
   return (

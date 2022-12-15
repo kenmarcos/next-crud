@@ -9,9 +9,12 @@ import Client from "../../../core/Client";
 import ClientRepository from "../../../core/ClientRepository";
 import ClientCollection from "../../../backend/db/ClientCollection";
 import moment from "moment";
+import { Dispatch, SetStateAction } from "react";
+import { toast } from "react-toastify";
 
 interface ClientRegisterFormProps {
   getClients: () => Promise<void>;
+  setIsClientRegisterModalOpen: Dispatch<SetStateAction<boolean>>;
 }
 interface ClientRegisterFormData {
   name: string;
@@ -36,8 +39,17 @@ const ClientRegisterForm = (props: ClientRegisterFormProps) => {
 
   const onSubmitFunction = async (data: ClientRegisterFormData) => {
     const client = new Client(data.name, data.birthDate);
-    await repo.save(client);
-    props.getClients();
+    try {
+      await repo.save(client);
+
+      await props.getClients();
+
+      toast.success("Cadastro realizado com sucesso!");
+      props.setIsClientRegisterModalOpen(false);
+    } catch (error) {
+      console.log(error);
+      toast.error("Ocorreu um erro! Por favor, tente novamente.");
+    }
   };
 
   return (

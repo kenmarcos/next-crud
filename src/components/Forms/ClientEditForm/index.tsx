@@ -7,13 +7,15 @@ import Input from "../../Input";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useEffect } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
 import ClientRepository from "../../../core/ClientRepository";
 import ClientCollection from "../../../backend/db/ClientCollection";
+import { toast } from "react-toastify";
 
 interface ClientEditFormProps {
   client: Client;
   getClients: () => Promise<void>;
+  setIsClientEditModalOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 interface ClientEditFormData {
@@ -42,8 +44,17 @@ const ClientEditForm = (props: ClientEditFormProps) => {
 
   const onSubmitFunction = async (data: ClientEditFormData) => {
     const client = new Client(data.name, data.birthDate, data.id);
-    await repo.save(client);
-    props.getClients();
+    try {
+      await repo.save(client);
+
+      await props.getClients();
+
+      toast.success("Dados atualizados com sucesso!");
+      props.setIsClientEditModalOpen(false);
+    } catch (error) {
+      console.log(error);
+      toast.error("Ocorreu um erro! Por favor, tente novamente.");
+    }
   };
 
   useEffect(() => {

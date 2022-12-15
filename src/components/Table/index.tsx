@@ -1,10 +1,10 @@
 import Client from "../../core/Client";
 import { EditIcon, TrashIcon } from "../Icons";
 import Modal from "../Modal";
-import * as Dialog from "@radix-ui/react-dialog";
 import Button from "../Button";
 import ClientEditForm from "../Forms/ClientEditForm";
 import ClientRemoveAlert from "./components/ClientRemoveAlert";
+import ClientCard from "../ClientCard";
 
 interface TableProps {
   clients: Client[];
@@ -25,40 +25,12 @@ const Table = (props: TableProps) => {
 
       <tbody>
         {props.clients.map((client, idx) => (
-          <tr
+          <ClientCard
             key={client.id}
-            className={`${idx % 2 === 0 ? "bg-purple-200" : "bg-purple-100"}`}
-          >
-            <td className="text-left p-4">{client.id}</td>
-            <td className="text-left p-4">{client.name}</td>
-            <td className="text-left p-4">{String(client.age)}</td>
-            <td className="flex justify-center p-4 gap-1">
-              <Modal
-                triggerButton={
-                  <button className="text-green-700 rounded-full hover:bg-gray-50 p-2 flex justify-center items-center focus:border-none">
-                    <EditIcon />
-                  </button>
-                }
-                modalTitle="Editar Cliente"
-              >
-                <ClientEditForm client={client} getClients={props.getClients} />
-              </Modal>
-
-              <Modal
-                triggerButton={
-                  <button className="text-red-500 rounded-full hover:bg-gray-50 p-2 flex justify-center items-center focus:border-none">
-                    <TrashIcon />
-                  </button>
-                }
-                modalTitle="Excluir Cliente"
-              >
-                <ClientRemoveAlert
-                  client={client}
-                  getClients={props.getClients}
-                />
-              </Modal>
-            </td>
-          </tr>
+            client={client}
+            idx={idx}
+            getClients={props.getClients}
+          />
         ))}
       </tbody>
     </table>

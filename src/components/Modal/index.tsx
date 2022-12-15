@@ -1,15 +1,17 @@
 import * as Dialog from "@radix-ui/react-dialog";
-import React, { ReactNode } from "react";
+import React, { Dispatch, ReactNode, SetStateAction } from "react";
 
 interface ModalProps {
   triggerButton: ReactNode;
   modalTitle: string;
   children: ReactNode;
+  open: boolean;
+  setOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 const Modal = (props: ModalProps) => {
   return (
-    <Dialog.Root>
+    <Dialog.Root open={props.open} onOpenChange={props.setOpen}>
       <Dialog.Trigger asChild>{props.triggerButton}</Dialog.Trigger>
 
       <Dialog.Portal>
