@@ -89,7 +89,7 @@ const ClientEditForm = (props: ClientEditFormProps) => {
             labeltext="Código:"
             placeholder="Código de Identificação"
             readOnly
-            defaultValue={props.client.id as string}
+            defaultValue={props.client?.id as string}
             {...register("id")}
           />
         </div>
@@ -99,7 +99,7 @@ const ClientEditForm = (props: ClientEditFormProps) => {
             labeltext="Nome:"
             placeholder="Nome Completo"
             icon={<PersonIcon />}
-            defaultValue={props.client.name}
+            defaultValue={props.client?.name}
             {...register("name")}
             error={errors.name?.message}
           />
@@ -111,7 +111,7 @@ const ClientEditForm = (props: ClientEditFormProps) => {
             type="text"
             placeholder="dd/mm/aaaa"
             icon={<BirthDateIcon />}
-            defaultValue={moment(props.client.birthDate).format("DD/MM/YYYY")}
+            defaultValue={moment(props.client?.birthDate).format("DD/MM/YYYY")}
             {...register("birthDate")}
             error={errors.birthDate?.message}
             onChange={(event) => dateInput(event, setValue, "birthDate")}
